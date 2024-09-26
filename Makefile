@@ -315,7 +315,8 @@ CFLAGS += -DUF2_VERSION='"$(GIT_VERSION) $(GIT_SUBMODULE_VERSIONS)"'
 CFLAGS += -DBLEDIS_FW_VERSION='"$(GIT_VERSION) $(SD_NAME) $(SD_VERSION)"'
 
 _VER = $(subst ., ,$(word 1, $(subst -, ,$(GIT_VERSION))))
-CFLAGS += -DMK_BOOTLOADER_VERSION='($(word 1,$(_VER)) << 16) + ($(word 2,$(_VER)) << 8) + $(word 3,$(_VER))'
+#CFLAGS += -DMK_BOOTLOADER_VERSION='($(word 1,$(_VER)) << 16) + ($(word 2,$(_VER)) << 8) + $(word 3,$(_VER))'
+CFLAGS += -DMK_BOOTLOADER_VERSION='100'
 
 # Debug option use RTT for printf
 ifeq ($(DEBUG), 1)
@@ -500,7 +501,7 @@ dfu-flash: flash-dfu
 flash-dfu: $(BUILD)/$(MERGED_FILE).zip
 	@:$(call check_defined, SERIAL, example: SERIAL=/dev/ttyACM0)
 	$(NRFUTIL) --verbose dfu serial --package $< -p $(SERIAL) -b 115200 --singlebank --touch 1200
-	
+
 # flash skip crc magic ( app valid = 0x0001, crc = 0x0000 )
 #flash-skip-crc:
 # nrfjprog --memwr $(BOOT_SETTING_ADDR) --val 0x00000001 -f nrf52
